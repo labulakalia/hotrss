@@ -3,8 +3,8 @@ package crawler
 import (
 	"context"
 	"fmt"
-	"rss_hot/internal/storage"
-	"rss_hot/internal/util"
+	"hotrss/internal/storage"
+	"hotrss/internal/util"
 	"sync"
 	"time"
 

@@ -3,7 +3,7 @@ COMMIT=`git rev-parse --short HEAD`
 BUILDDATE=`date "+%Y-%m-%d"`
 
 BUILD_DIR=build
-APP_NAME=rss_hot
+APP_NAME=hotrss
 
 sources=$(wildcard *.go)
 

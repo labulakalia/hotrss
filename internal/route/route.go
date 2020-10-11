@@ -1,7 +1,7 @@
 package route
 
 import (
-	"rss_hot/internal/route/api"
+	"hotrss/internal/route/api"
 
 	"github.com/gin-gonic/gin"
 )

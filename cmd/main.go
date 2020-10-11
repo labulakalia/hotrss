@@ -4,8 +4,8 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"rss_hot/internal/crawler"
-	"rss_hot/internal/route"
+	"hotrss/internal/crawler"
+	"hotrss/internal/route"
 )
 
 func main() {
@@ -18,8 +18,8 @@ func main() {
 
 	ctx = context.WithValue(ctx, "baseurl", *baseurl)
 	crawler.RegistryCrawlers(ctx)
-	
+
 	r := route.InitRoute()
 	r.Run(fmt.Sprintf("0.0.0.0:%d", *port))
-	
+
 }

@@ -3,7 +3,7 @@ package crawler
 import (
 	"context"
 	"encoding/xml"
-	"rss_hot/internal/crawler/site/hupu"
+	"hotrss/internal/crawler/site/hupu"
 	"time"
 )
 

@@ -1,4 +1,4 @@
-module rss_hot
+module hotrss
 
 go 1.14
 

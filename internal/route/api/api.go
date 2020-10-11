@@ -3,9 +3,9 @@ package api
 import (
 	"encoding/xml"
 	"fmt"
+	"hotrss/internal/crawler"
+	"hotrss/internal/storage"
 	"net/http"
-	"rss_hot/internal/crawler"
-	"rss_hot/internal/storage"
 
 	"github.com/gin-gonic/gin"
 )

@@ -3,7 +3,7 @@
 
 ## 部署
 ```shell
-./rss_hot -baseurl http://yourip:8080 -port 8080
+./hotrss -baseurl http://yourip:8080 -port 8080
 # baseurl为访问rss服务时需要的IP或域名
 # port为web服务的端口
 ```
