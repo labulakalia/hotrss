@@ -40,7 +40,7 @@ clean:
 	rm -rf ${BUILD_DIR}
 
 vet:
-	go vet main.go
-	
+	go vet cmd/main.go
+
 build:
 	go build -o crocodile -ldflags "-X main.v=${VERSION} -X main.c=${COMMIT} -X main.d=${BUILDDATE}" main.go
