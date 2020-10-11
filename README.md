@@ -1,3 +1,10 @@
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/labulaka521/hotrss/Build_release)
+[![Downloads](https://img.shields.io/github/downloads/labulaka521/hotrss/total.svg)](https://github.com/labulaka521/hotrss/releases)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/labulaka521/hotrss/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/release/labulaka521/hotrss.svg?label=Release)](https://github.com/labulaka521/hotrss/releases)
+![GitHub issues](https://img.shields.io/github/issues/labulaka521/hotrss)
+![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/labulaka521/hotrss)
+
 ## HotRSS
 一款专注于网站热榜的RSS服务
 
