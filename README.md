@@ -1,9 +1,9 @@
 ## 热榜RSS
 一款专注于网站热榜的RSS服务
 
-## 源码部署
+## 部署
 ```shell
-go run cmd/main.go -baseurl http://yourip:8080 -port 8080
+./rss_hot -baseurl http://yourip:8080 -port 8080
 # baseurl为访问rss服务时需要的IP或域名
 # port为web服务的端口
 ```
