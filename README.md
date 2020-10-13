@@ -8,6 +8,15 @@
 ## HotRSS
 一款专注于网站热榜的RSS服务
 
+## 使用
+- [主页](https://hotrss.top)
+    - [RssByJson](https://hotrss.top/feeds/json)
+    - [RssByXml](https://hotrss.top/feeds/json)
+    - [下载opml](https://hotrss.top/opml)
+    - [新热榜Rss通知(TODO)](https://hotrss.top)
+    
+
+
 ## 部署
 ```shell
 ./hotrss -baseurl http://yourip:8080 -port 8080
