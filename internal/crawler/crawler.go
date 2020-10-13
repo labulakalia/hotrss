@@ -137,7 +137,7 @@ func (cm *CrawleManager) GetFeedOpml() *RssOpml {
 			Description: crawlerinfo.Title,
 			Type:        "rss",
 			Version:     "RSS",
-			XMLURL:      crawlerinfo.URL,
+			XMLURL:      fmt.Sprintf("%s/feed/%s.%s", cm.BaseURL, crawlerinfo.Name, "xml"),
 		})
 	}
 	return feedopml
