@@ -68,7 +68,7 @@ func (ci *CrawleInfo) run(ctx context.Context) {
 	}
 	if xmlfeed != "" {
 		key := fmt.Sprintf("%s.%s", ci.Name, "xml")
-		storage.DefaultStorage.SaveFeedData(key, util.StringToByte(xmlfeed))
+		storage.DefaultStorage.SaveFeedData(key, xmlfeed)
 	}
 
 	jsonfeed, err := feed.ToJSON()
@@ -77,7 +77,7 @@ func (ci *CrawleInfo) run(ctx context.Context) {
 	}
 	if jsonfeed != "" {
 		key := fmt.Sprintf("%s.%s", ci.Name, "json")
-		storage.DefaultStorage.SaveFeedData(key, util.StringToByte(jsonfeed))
+		storage.DefaultStorage.SaveFeedData(key, jsonfeed)
 	}
 	log.Info().Msgf("%s crawler feed total %d", ci.Name, len(feed.Items))
 }

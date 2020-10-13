@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog/log"
 )
 
 // GetFeedInfo get rss feed
@@ -19,8 +20,8 @@ func GetFeedInfo(c *gin.Context) {
 		c.Writer.WriteString(err.Error())
 		return
 	}
-	c.Writer.WriteHeaderNow()
-	c.Writer.Write(data)
+	log.Debug().Msgf("%s", data)
+	c.String(http.StatusOK, data)
 }
 
 // GetFeeds get all feeds

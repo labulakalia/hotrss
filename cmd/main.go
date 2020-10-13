@@ -7,6 +7,7 @@ import (
 	"hotrss/internal/crawler"
 	"hotrss/internal/route"
 
+	"github.com/gin-gonic/gin"
 	"github.com/natefinch/lumberjack"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -16,7 +17,15 @@ func main() {
 	baseurl := flag.String("baseurl", "http://127.0.0.1:8080", "your feed base ip or url eg: http://1.1.1.1:8080 http://labulaka521.top")
 	port := flag.Int("port", 8080, "http server run port")
 	logfile := flag.String("logfile", "/var/log/hotrss.log", "log file")
+	debug := flag.Bool("debug", false, "sets log level to debug")
 	flag.Parse()
+
+	gin.SetMode(gin.ReleaseMode)
+	zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	if *debug {
+		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+		gin.SetMode(gin.DebugMode)
+	}
 
 	zerolog.TimeFieldFormat = "2006-01-02 15:04:05"
 	lublogger := lumberjack.Logger{

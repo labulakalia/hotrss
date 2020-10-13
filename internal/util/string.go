@@ -2,13 +2,24 @@ package util
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 	"unsafe"
 )
 
-// StringToByte string to byte
-func StringToByte(data string) []byte {
-	return *(*[]byte)(unsafe.Pointer(&data))
+// String2ByteSlice string to []byte nocopy
+func String2ByteSlice(str string) (bs []byte) {
+	strHdr := (*reflect.StringHeader)(unsafe.Pointer(&str))
+	sliceHdr := (*reflect.SliceHeader)(unsafe.Pointer(&bs))
+	sliceHdr.Data = strHdr.Data
+	sliceHdr.Cap = strHdr.Len
+	sliceHdr.Len = strHdr.Len
+	return
+}
+
+// ByteSlice2String []byte to string nocopy
+func ByteSlice2String(bs []byte) string {
+	return *(*string)(unsafe.Pointer(&bs))
 }
 
 // JSONTime json time
@@ -18,5 +29,5 @@ type JSONTime time.Time
 func (t JSONTime) MarshalJSON() ([]byte, error) {
 	tt := fmt.Sprintf("\"%s\"", time.Time(t).Format("2006-01-02 15:04:05"))
 	fmt.Println(tt)
-	return StringToByte(tt), nil
+	return String2ByteSlice(tt), nil
 }

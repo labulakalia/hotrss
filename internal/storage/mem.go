@@ -10,22 +10,22 @@ import (
 // MemStorage data store mem
 type MemStorage struct {
 	sync.RWMutex
-	cache map[string][]byte
+	cache map[string]string
 }
 
 // GetFeedData get feed from mem
-func (m *MemStorage) GetFeedData(key string) ([]byte, error) {
+func (m *MemStorage) GetFeedData(key string) (string, error) {
 	m.RLock()
 	data, exist := m.cache[key]
 	m.RUnlock()
 	if !exist {
-		return nil, fmt.Errorf("can not fin key %s", key)
+		return "", fmt.Errorf("can not fin key %s", key)
 	}
 	return data, nil
 }
 
 // SaveFeedData save feed to mem
-func (m *MemStorage) SaveFeedData(key string, data []byte) error {
+func (m *MemStorage) SaveFeedData(key string, data string) error {
 	log.Debug().Msgf("store %s data", key)
 	m.Lock()
 	m.cache[key] = data
@@ -36,6 +36,6 @@ func (m *MemStorage) SaveFeedData(key string, data []byte) error {
 // NewMemStorage init mem storage
 func NewMemStorage() FeedStorager {
 	return &MemStorage{
-		cache: make(map[string][]byte),
+		cache: make(map[string]string),
 	}
 }

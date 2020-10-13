@@ -8,7 +8,6 @@ import (
 
 // Request request data
 func Request(req *http.Request, client *http.Client) (io.Reader, error) {
-
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
