@@ -16,19 +16,10 @@ import (
 
 // copy from chrome
 const cURLData = `curl 'https://bbs.hupu.com/all-gambia' \
--H 'authority: bbs.hupu.com' \
--H 'cache-control: max-age=0' \
--H 'upgrade-insecure-requests: 1' \
--H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36' \
--H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
--H 'sec-fetch-site: same-site' \
--H 'sec-fetch-mode: navigate' \
--H 'sec-fetch-user: ?1' \
--H 'sec-fetch-dest: document' \
--H 'referer: https://www.hupu.com/' \
--H 'accept-language: zh-CN,zh;q=0.9,en;q=0.8' \
--H 'cookie: _dacevid3=fea0749f.2c8f.e76c.f688.60dcb06d67f0; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%2216e72a1b1095a5-0615fee4b372d4-1d3e6a5a-1296000-16e72a1b10a3ef%22%2C%22%24device_id%22%3A%2216e72a1b1095a5-0615fee4b372d4-1d3e6a5a-1296000-16e72a1b10a3ef%22%2C%22props%22%3A%7B%22%24latest_traffic_source_type%22%3A%22%E5%BC%95%E8%8D%90%E6%B5%81%E9%87%8F%22%2C%22%24latest_referrer%22%3A%22https%3A%2F%2Fmo.fish%2F%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC%22%7D%7D; Hm_lvt_39fc58a7ab8a311f2f6ca4dc1222a96e=1596450051,1596450053,1596450134,1596450280; PHPSESSID=b5c0b8ea3a6b1aa26eb90e592a7157c2; _cnzz_CV30020080=buzi_cookie%7Cfea0749f.2c8f.e76c.f688.60dcb06d67f0%7C-1; Hm_lvt_4fac77ceccb0cd4ad5ef1be46d740615=1602138091; Hm_lvt_b241fb65ecc2ccf4e7e3b9601c7a50de=1602138091; _fmdata=QnBISsVgHYRsOvkwwh%2BRdzPkSJyLnYHpyk66AyihuOIQm8zzAUp4sgIBgnZrI0V9Q6rFGrOPBHlxs1D1SmcbAyN2H9kLpL8GixM3bmJIPE8%3D; acw_tc=781bad2916021775896718696e5f90cae6d74ed5abca9a65353fed90d05554; __dacevst=ef98d509.150beb6c|1602179408862; Hm_lpvt_b241fb65ecc2ccf4e7e3b9601c7a50de=1602177610; Hm_lpvt_4fac77ceccb0cd4ad5ef1be46d740615=1602177610; Hm_lvt_c324100ace03a4c61826ef5494c44048=1602138092,1602177591,1602177610; Hm_lpvt_c324100ace03a4c61826ef5494c44048=1602177610' \
---compressed`
+-X 'GET' \
+-H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' \
+-H 'Host: bbs.hupu.com' \
+-H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Safari/605.1.15'`
 
 // NewBXJ new hupu crawler
 func NewBXJ() *BXJ {
@@ -81,14 +72,17 @@ func (c *BXJ) GenRssFeed(ctx context.Context) (*feeds.Feed, error) {
 	pageurls := []string{}
 
 	document.Find("#container > div > div.bbsHotPit > div:nth-child(2)").First().Find("ul > li").Each(func(i int, s *goquery.Selection) {
+
 		href, exist := s.Find("span.textSpan > a").Attr("href")
 		if !exist {
+
 			return
 		}
 		pageurls = append(pageurls, c.baseURL+href)
 	})
 
 	failedURL := []string{}
+	fmt.Println(pageurls)
 	for _, url := range pageurls {
 		item, err := c.getPage(url)
 		if err != nil {
