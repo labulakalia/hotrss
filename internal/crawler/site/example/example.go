@@ -16,9 +16,7 @@ import (
 )
 
 // copy from chrome
-const cURLData = `curl 'https://bbs.hupu.com/all-gambia' \
--H 'authority: bbs.hupu.com' \
--H 'cache-control: max-age=0' \
+const cURLData = `curl 'https://bbs.hupu.com/all-gambia' -H 'authority: bbs.hupu.com' -H 'cache-control: max-age=0' \
 -H 'upgrade-insecure-requests: 1' \
 -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36' \
 -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
@@ -54,6 +52,8 @@ func (c *Example) GenRssFeed(ctx context.Context) (*feeds.Feed, error) {
 	if err != nil {
 		return nil, fmt.Errorf("parse request failed %w", err)
 	}
+	fmt.Printf("%+v\n", req.Header)
+	return nil, nil
 	req.WithContext(ctx)
 	// req
 	// 保存解析后的req请求

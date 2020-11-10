@@ -14,7 +14,7 @@ func InitRoute(logfile string) *gin.Engine {
 
 	r.Use(middle.HTPPLog(logfile))
 	r.Use(middle.RecoverLog(logfile))
-
+	r.ForwardedByClientIP = true
 	pprof.Register(r)
 
 	r.GET("/feed/:name_feedtype", api.GetFeedInfo)

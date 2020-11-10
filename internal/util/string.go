@@ -3,6 +3,7 @@ package util
 import (
 	"fmt"
 	"reflect"
+	"strings"
 	"time"
 	"unsafe"
 )
@@ -30,4 +31,12 @@ func (t JSONTime) MarshalJSON() ([]byte, error) {
 	tt := fmt.Sprintf("\"%s\"", time.Time(t).Format("2006-01-02 15:04:05"))
 	fmt.Println(tt)
 	return String2ByteSlice(tt), nil
+}
+
+func RemoveSlash(url string) string {
+	urla := []string{}
+	for _, v := range strings.Split(url, "\n") {
+		urla = append(urla, strings.TrimRight(v, `\`))
+	}
+	return strings.Join(urla, "")
 }

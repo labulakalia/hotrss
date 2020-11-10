@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/antlabs/pcurl"
 	"github.com/gorilla/feeds"
 	"github.com/rs/zerolog/log"
 )
@@ -49,7 +48,7 @@ type BXJ struct {
 
 // GenRssFeed impl interface Crawler
 func (c *BXJ) GenRssFeed(ctx context.Context) (*feeds.Feed, error) {
-	req, err := pcurl.ParseAndRequest(c.cURLData)
+	req, err := util.ParseAndRequest(c.cURLData)
 	if err != nil {
 		return nil, fmt.Errorf("parse request failed %w", err)
 	}
