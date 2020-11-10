@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/xml"
 	"hotrss/internal/crawler/site/hupu"
+	"hotrss/internal/crawler/site/kr36"
 	"hotrss/internal/crawler/site/xueqiu"
 	"time"
 )
@@ -19,6 +20,7 @@ func RegistryCrawlers(ctx context.Context) {
 	crawle.Registry("hupu", hupu.NewBXJ(), time.Hour*2)
 	// 雪球热榜
 	crawle.Registry("xueqiu", xueqiu.NewXueqiu(), time.Hour*2)
+	crawle.Registry("36kr", kr36.NewKr36(), time.Hour*2)
 
 	crawle.Start(ctx)
 }

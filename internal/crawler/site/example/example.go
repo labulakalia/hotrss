@@ -52,8 +52,6 @@ func (c *Example) GenRssFeed(ctx context.Context) (*feeds.Feed, error) {
 	if err != nil {
 		return nil, fmt.Errorf("parse request failed %w", err)
 	}
-	fmt.Printf("%+v\n", req.Header)
-	return nil, nil
 	req.WithContext(ctx)
 	// req
 	// 保存解析后的req请求
