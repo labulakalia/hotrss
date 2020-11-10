@@ -14,8 +14,12 @@
     - [RssByXml](https://hotrss.top/feeds/json)
     - [下载opml](https://hotrss.top/opml)
     - [新热榜Rss通知(TODO)](https://hotrss.top)
-    
 
+### 已支持网站
+- [虎扑步行街热帖](https://bbs.hupu.com/all-gambia)
+- [36氪人气榜](https://36kr.com/hot-list/catalog)
+- [雪球热帖](https://xueqiu.com/?category=snb_article)
+- [什么值得买_今日热门](https://post.smzdm.com/hot_1/)
 
 ## 部署
 ```shell
@@ -24,7 +28,7 @@
 # port为web服务的端口
 ```
 
-## 访问Rss
+### 访问Rss
 - 主页   
     `baseurl`
 - 所有的Json格式rss    
@@ -34,6 +38,7 @@
 - rss热榜opml文件下载  
     `baseurl/opml`
 > baseurl即为启动服务的baseurl参数
+
 
 ## 如何添加新的站点
 ### 方法1

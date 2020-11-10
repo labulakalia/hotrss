@@ -95,7 +95,7 @@ func (c *XueqiuHot) GenRssFeed(ctx context.Context) (*feeds.Feed, error) {
 		Created:     time.Now(),
 	}
 
-	for _, respitem := range xueqiuresp.Items {
+	for _, respitem := range xueqiuresp.Items[:10] {
 		pageUrl := fmt.Sprintf("%s%s", c.baseURL, respitem.OriginalStatus.Target)
 		item := &feeds.Item{
 			Title:   respitem.OriginalStatus.Title,
@@ -109,45 +109,3 @@ func (c *XueqiuHot) GenRssFeed(ctx context.Context) (*feeds.Feed, error) {
 	}
 	return &feed, nil
 }
-
-// getPage get url page body
-// func (c *XueqiuHot) getPage(pageURL string) (*feeds.Item, error) {
-// 	newurl, err := url.Parse(pageURL)
-// 	if err != nil {
-// 		return nil, fmt.Errorf("parse url failed %w", err)
-// 	}
-// 	c.req.URL = newurl
-
-// 	res, err := util.Request(c.req, c.Client)
-// 	if err != nil {
-// 		return nil, fmt.Errorf("request failed %w", err)
-// 	}
-
-// 	document, err := goquery.NewDocumentFromReader(res)
-// 	if err != nil {
-// 		return nil, fmt.Errorf("new document from resp failed %w", err)
-// 	}
-
-// 	title := document.Find("#tpc > div > div.floor_box > table.case > tbody > tr > td > div.subhead > span").Text()
-// 	name := document.Find("#tpc > div > div.floor_box > div.author > div.left > a").Text()
-
-// 	ret, err := document.Find("#tpc > div > div.floor_box > table.case > tbody > tr > td > div.quote-content").RemoveClass("small").Html()
-// 	if err != nil {
-// 		return nil, fmt.Errorf("parse html '#tpc > div > div.floor_box > table.case > tbody > tr > td > div.quote-content' failed %w", err)
-// 	}
-// 	selection := document.Find("#t_main > div.bbs_head > div.bbs-hd-h1 > span")
-// 	browse := selection.Find("span:nth-child(1)").Text()
-// 	browse = browse + selection.Find("span:nth-child(2)").Text()
-// 	// NetNewsWire uses WebKit, which is Apple’s HTML rendering system. WebKit does not support WebP, so it can’t display that image.
-// 	ret = strings.Replace(ret, "?x-oss-process=image/resize,w_800/format,webp", "", -1)
-// 	// 图片超过三张的会被投毒，处理下
-// 	ret = strings.Replace(ret, `https://b1.hoopchina.com.cn/web/sns/bbs/images/placeholder.png" data-original="`, "", -1)
-// 	item := &feeds.Item{
-// 		Title:   title,
-// 		Link:    &feeds.Link{Href: pageURL},
-// 		Author:  &feeds.Author{Name: name},
-// 		Content: ret + browse, // for json
-// 		Id:      pageURL,
-// 	}
-// 	return item, nil
-// }

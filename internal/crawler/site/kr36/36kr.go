@@ -59,7 +59,7 @@ func (c *Kr36) GenRssFeed(ctx context.Context) (*feeds.Feed, error) {
 		return nil, fmt.Errorf("request url %s failed %w", c.req.URL, err)
 	}
 	// 设置referer
-	c.req.Header.Set("Referer", c.req.URL.Host)
+	c.req.Header.Set("Referer", c.req.URL.String())
 
 	// 解析请求到的数据
 	document, err := goquery.NewDocumentFromReader(res)
@@ -81,6 +81,9 @@ func (c *Kr36) GenRssFeed(ctx context.Context) (*feeds.Feed, error) {
 	// 如果页面的指定内容
 	// 打开开发者模式，选取所需要的html数据，然后右键，选择Copy->Copy selector,获取selector
 	document.Find("#app > div > div.kr-layout-main.clearfloat > div.main-right > div > div > div.main-wrapper > div.list-wrapper > div:nth-child(1) > div.article-list > div").Each(func(i int, s *goquery.Selection) {
+		if i >= 10 {
+			return
+		}
 		href, ok := s.Find("div.kr-shadow-content > div.article-item-pic-wrapper > a").Attr("href")
 		if !ok {
 			return
@@ -122,20 +125,26 @@ func (c *Kr36) getPage(pageURL string) (*feeds.Item, error) {
 	if err != nil {
 		return nil, fmt.Errorf("new document from resp failed %w", err)
 	}
-
+	// 标题
 	title := document.Find("#app > div > div.box-kr-article-new-y > div > div.kr-layout-main.clearfloat > div.main-right > div > div > div > div.article-detail-wrapper-box > div > div.article-left-container > div.article-content > div > div > div:nth-child(1) > div > h1").Text()
+	// 作者名称
 	name := document.Find("#app > div > div.box-kr-article-new-y > div > div.kr-layout-main.clearfloat > div.main-right > div > div > div > div.article-detail-wrapper-box > div > div.article-left-container > div.article-content > div > div > div:nth-child(1) > div > div.article-title-icon.common-width.margin-bottom-40 > a").Text()
-
+	// 文章内容
 	ret, err := document.Find("#app > div > div.box-kr-article-new-y > div > div.kr-layout-main.clearfloat > div.main-right > div > div > div > div.article-detail-wrapper-box > div > div.article-left-container > div.article-content > div > div > div.common-width.margin-bottom-20 > div").Html()
 	if err != nil {
 		return nil, fmt.Errorf("parse html '#tpc > div > div.floor_box > table.case > tbody > tr > td > div.quote-content' failed %w", err)
 	}
+	// 文章创建时间
+	// 没有文章创建时间 使用现在的时间
+	// 最讨厌xx小时前了 sb
+	createdAt := time.Now()
 	item := &feeds.Item{
 		Title:   title,
 		Link:    &feeds.Link{Href: pageURL},
 		Author:  &feeds.Author{Name: name},
-		Content: ret, // for json
+		Content: ret,
 		Id:      pageURL,
+		Created: createdAt,
 	}
 	return item, nil
 }

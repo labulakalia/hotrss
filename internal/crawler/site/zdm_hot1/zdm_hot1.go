@@ -6,6 +6,7 @@ import (
 	"hotrss/internal/util"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
@@ -93,7 +94,7 @@ func (c *ZdmHot1) GenRssFeed(ctx context.Context) (*feeds.Feed, error) {
 	})
 
 	failedURL := []string{}
-	for _, url := range pageurls[:1] {
+	for _, url := range pageurls {
 		item, err := c.getPage(url)
 		if err != nil {
 			log.Error().Msgf("get page failed: %v", err)
@@ -127,30 +128,34 @@ func (c *ZdmHot1) getPage(pageURL string) (*feeds.Item, error) {
 		return nil, fmt.Errorf("new document from resp failed %w", err)
 	}
 	// 文章标题
-	title := document.Find("#articleId > h1 > span").Text()
+	title := strings.TrimSpace(document.Find("#articleId > h1").Text()) 
 	// 文章作者
 	name := document.Find("#feed-side > div:nth-child(2) > div.user_tx > div > div > h2 > a").Text()
-
-	// 文章内容
-	ret, err := document.Find("#articleId").RemoveClass("item-name").Html()
-	if err != nil {
-		return nil, fmt.Errorf("parse html '#tpc > div > div.floor_box > table.case > tbody > tr > td > div.quote-content' failed %w", err)
-	}
 
 	// 文章发布时间
 	// 如果文章没有时间用time.Now()
 	timeStr := document.Find("#articleId > div.recommend-tab.z-clearfix.item-preferential > span > span:nth-child(1)").Text()
-
-	createAt, err := time.Parse("2006-01-02 15:04:05", timeStr)
+	var createAt time.Time
+	createAt, err = time.Parse("2006-01-02 15:04:05", timeStr)
 	if err != nil {
 		log.Error().Msgf("parse time %s failed: %v", timeStr, err)
 		createAt = time.Now()
+	}
+
+	// 文章内容
+
+	selection := document.Find("#articleId")
+	selection.Find("h1").Remove()
+	selection.Find("div").Remove()
+	ret, err := selection.Html()
+	if err != nil {
+		return nil, fmt.Errorf("parse html '#tpc > div > div.floor_box > table.case > tbody > tr > td > div.quote-content' failed %w", err)
 	}
 	item := &feeds.Item{
 		Title:   title,
 		Link:    &feeds.Link{Href: pageURL},
 		Author:  &feeds.Author{Name: name},
-		Content: ret, // for json
+		Content: strings.TrimSpace(ret), // for json
 		Id:      pageURL,
 		Created: createAt,
 	}

@@ -1,5 +1,4 @@
 package zdm_hot1
-// 示例
 
 import (
 	"context"

@@ -53,7 +53,7 @@ func (c *BXJ) GenRssFeed(ctx context.Context) (*feeds.Feed, error) {
 	}
 
 	c.baseURL = fmt.Sprintf("%s://%s", c.req.URL.Scheme, c.req.URL.Host)
-	c.req.Header.Set("Referer", c.req.URL.Host)
+	c.req.Header.Set("Referer", c.req.URL.String())
 
 	document, err := goquery.NewDocumentFromReader(res)
 	if err != nil {
@@ -72,7 +72,9 @@ func (c *BXJ) GenRssFeed(ctx context.Context) (*feeds.Feed, error) {
 	pageurls := []string{}
 
 	document.Find("#container > div > div.bbsHotPit > div:nth-child(2)").First().Find("ul > li").Each(func(i int, s *goquery.Selection) {
-
+		if i >= 10 {
+			return
+		}
 		href, exist := s.Find("span.textSpan > a").Attr("href")
 		if !exist {
 
@@ -89,7 +91,6 @@ func (c *BXJ) GenRssFeed(ctx context.Context) (*feeds.Feed, error) {
 			failedURL = append(failedURL, url)
 			continue
 		}
-		item.Created = now
 		feed.Items = append(feed.Items, item)
 	}
 
@@ -131,12 +132,17 @@ func (c *BXJ) getPage(pageURL string) (*feeds.Item, error) {
 	ret = strings.Replace(ret, "?x-oss-process=image/resize,w_800/format,webp", "", -1)
 	// 图片超过三张的会被投毒，处理下
 	ret = strings.Replace(ret, `https://b1.hoopchina.com.cn/web/sns/bbs/images/placeholder.png" data-original="`, "", -1)
+
+
+	createAtStr := document.Find("#tpc > div > div.floor_box > div.author > div.left > span.stime").Text()
+	createdAt, err := time.Parse("2006-01-02 15:04:05", createAtStr)
 	item := &feeds.Item{
 		Title:   title,
 		Link:    &feeds.Link{Href: pageURL},
 		Author:  &feeds.Author{Name: name},
 		Content: ret + browse, // for json
 		Id:      pageURL,
+		Created: createdAt,
 	}
 	return item, nil
 }
