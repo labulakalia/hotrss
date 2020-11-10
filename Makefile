@@ -43,4 +43,4 @@ vet:
 	go vet cmd/main.go
 
 build:
-	go build -o hotrss -ldflags "-X main.v=${VERSION} -X main.c=${COMMIT} -X main.d=${BUILDDATE}" main.go
+	go build -o hotrss -ldflags "-X main.v=${VERSION} -X main.c=${COMMIT} -X main.d=${BUILDDATE}" cms/main.go
